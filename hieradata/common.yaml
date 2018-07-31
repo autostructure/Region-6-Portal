@@ -1,0 +1,75 @@
+---
+docker_tomcat_module::environment_vars: []
+
+docker_tomcat_module::setenv_entries:
+  CATALINA_OPTS:
+    - '"-Xmx2048m $CATALINA_OPTS"'
+
+docker_tomcat_module::tomcat_libraries:
+  - http://artifactory.fdc.fs.usda.gov/artifactory/ext-release-local/com/oracle/ojdbc6/1.0.0/ojdbc6-1.0.0.jar
+
+# Use static catalina home for docker build
+docker_tomcat_module::catalina_home: &catalina_home /usr/local/tomcat
+
+docker_tomcat_module::properties_properties: {}
+
+docker_tomcat_module::servers: {}
+docker_tomcat_module::server_connectors: {}
+
+# Setup path for /fia/evalidator uri
+docker_tomcat_module::server_contexts: {}
+#  evalidator:
+#    catalina_base: *catalina_home
+#    additional_attributes:
+#      path: /Evalidator/evalidator
+
+docker_tomcat_module::server_engines: {}
+docker_tomcat_module::server_globalnamingresources: {}
+docker_tomcat_module::server_hosts: {}
+docker_tomcat_module::server_listeners: {}
+docker_tomcat_module::server_realms: {}
+docker_tomcat_module::server_services: {}
+docker_tomcat_module::server_tomcat_users: {}
+docker_tomcat_module::server_valves: {}
+
+docker_tomcat_module::contexts: {}
+docker_tomcat_module::context_environments:
+  schemaName:
+    catalina_base: *catalina_home
+    override: true
+    type:     java.lang.String
+    value:    FS_FIADB.
+  url:
+    catalina_base: *catalina_home
+    override: true
+    type:     java.lang.String
+    value:    oracle
+  schemaNameLog:
+    catalina_base: *catalina_home
+    override: true
+    type:     java.lang.String
+    value:    FS_FIADB.
+docker_tomcat_module::context_managers: {}
+docker_tomcat_module::context_resources:
+  jdbc/tm_datasource:
+    catalina_base: *catalina_home
+    resource_type:          javax.sql.DataSource
+    additional_attributes:
+      driverClassName:        oracle.jdbc.driver.OracleDriver
+      url:                    ${}
+      type:                   javax.sql.DataSource
+      removeAbandonedOnBorrow:        true
+      removeAbandonedTimeout: 120
+      maxTotal:               200
+      maxIdle:                20
+      maxWaitMillis:          60000
+      username:               ${}
+      password:               ${}
+
+
+docker_tomcat_module::context_resourcelinks: {}
+
+docker_tomcat_module::wars:
+  Evalidator.war:
+    catalina_base: *catalina_home
+    war_source: https://artifactory.fdc.fs.usda.gov/artifactory/libs-snapshot-local/gov/usda/fs/fia/eValidator/snapshot_version/eValidator-snapshot_version.war
