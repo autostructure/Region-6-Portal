@@ -7,8 +7,8 @@
 	<packaging>war</packaging>
 	<version>2.0.2-SNAPSHOT</version>
 	<url>http://maven.apache.org</url>
-	
-	
+
+
 
 	<build>
 		<finalName>r6portal</finalName>
@@ -25,6 +25,19 @@
 					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
+        <plugin>
+           <groupId>com.microsoft.azure</groupId>
+           <artifactId>azure-webapp-maven-plugin</artifactId>
+           <configuration>
+
+               <!-- Web App information -->
+               <resourceGroup>terese_demo</resourceGroup>
+               <appName>42c2efe949c36c26</appName>
+
+               <!-- Java Runtime Stack for Web App on Linux-->
+               <linuxRuntime>tomcat 8.5-jre8</linuxRuntime>
+           </configuration>
+        </plugin>
 		</plugins>
 	</build>
 <dependencies>
